@@ -1,4 +1,5 @@
-import React, { useState, useEffect, ReactElement } from 'react';
+import { useState, useEffect, ReactElement } from 'react';
+import './index.css';
 
 interface Planet {
   name: string;
@@ -10,6 +11,7 @@ function App(): ReactElement {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState<Planet[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const handleSearch = async (term: string) => {
     setIsLoading(true);
@@ -21,8 +23,9 @@ function App(): ReactElement {
       setSearchResults(data.results);
       setIsLoading(false);
       localStorage.setItem('searchTerm', term);
+      setErrorMessage(``);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      setErrorMessage(`Error fetching data: ${error}`);
       setIsLoading(false);
     }
   };
@@ -35,24 +38,21 @@ function App(): ReactElement {
       setSearchResults(data.results);
       setIsLoading(false);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      setErrorMessage(`Error fetching data: ${error}`);
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    // Получить сохраненный поисковый запрос из localStorage
     const savedSearchTerm = localStorage.getItem('searchTerm');
 
-    // Если сохраненный поисковый запрос существует, установить его в searchTerm и выполнить поиск
     if (savedSearchTerm) {
       setSearchTerm(savedSearchTerm);
       handleSearch(savedSearchTerm);
     } else {
-      // Если сохраненного поискового запроса нет, загрузить все планеты
       fetchData();
     }
-  }, []); // Пустой массив зависимостей гарантирует выполнение useEffect только при монтировании компонента
+  }, []);
 
   return (
     <div>
@@ -81,6 +81,7 @@ function App(): ReactElement {
           </ul>
         )}
       </div>
+      {errorMessage && <div className="error-message">{errorMessage}</div>}
     </div>
   );
 }
