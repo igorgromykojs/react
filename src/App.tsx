@@ -12,6 +12,9 @@ function App(): ReactElement {
   const [searchResults, setSearchResults] = useState<Planet[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string>('');
+  const throwError = () => {
+    throw new Error('This is a sample error');
+  };
 
   const handleSearch = async (term: string) => {
     setIsLoading(true);
@@ -82,6 +85,9 @@ function App(): ReactElement {
         )}
       </div>
       {errorMessage && <div className="error-message">{errorMessage}</div>}
+      <button type="button" onClick={throwError}>
+        Throw Error
+      </button>
     </div>
   );
 }
