@@ -3,3 +3,12 @@
   font-weight: bold;
   margin-top: 10px;
 }
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.seach-panel {
+  padding-bottom: 7px;
+  border-bottom: 2px solid black;
+}
