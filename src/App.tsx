@@ -58,8 +58,8 @@ function App(): ReactElement {
   }, []);
 
   return (
-    <div className='wrapper'>
-      <div className='seach-panel'>
+    <div className="wrapper">
+      <div className="seach-panel">
         <input
           type="text"
           value={searchTerm}
