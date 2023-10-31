@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import './index.css';
+import SearchPanel from './components/SearchPanel';
+import PlanetList from './components/PlanetList';
+import ErrorMessage from './components/ErrorMessage';
 
 interface Planet {
   name: string;
   climate: string;
   population: string;
 }
-
 interface AppProps {}
 
 interface AppState {
@@ -27,10 +29,20 @@ class App extends Component<AppProps, AppState> {
     };
   }
 
+  componentDidMount() {
+    const savedSearchTerm = localStorage.getItem('searchTerm');
+    if (savedSearchTerm) {
+      this.setState({ searchTerm: savedSearchTerm });
+      this.handleSearch(savedSearchTerm);
+    } else {
+      this.fetchData();
+    }
+  }
+  
   throwError = () => {
     throw new Error('This is a sample error');
   };
-
+  
   handleSearch = async (term: string) => {
     this.setState({ isLoading: true });
     try {
@@ -51,7 +63,7 @@ class App extends Component<AppProps, AppState> {
       });
     }
   };
-
+  
   fetchData = async () => {
     this.setState({ isLoading: true });
     try {
@@ -66,47 +78,18 @@ class App extends Component<AppProps, AppState> {
     }
   };
 
-  componentDidMount() {
-    const savedSearchTerm = localStorage.getItem('searchTerm');
-    if (savedSearchTerm) {
-      this.setState({ searchTerm: savedSearchTerm });
-      this.handleSearch(savedSearchTerm);
-    } else {
-      this.fetchData();
-    }
-  }
-
   render() {
     const { searchTerm, searchResults, isLoading, errorMessage } = this.state;
 
     return (
       <div className="wrapper">
-        <div className="search-panel">
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={(e) => this.setState({ searchTerm: e.target.value })}
-          />
-          <button type="button" onClick={() => this.handleSearch(searchTerm)}>
-            Search
-          </button>
-        </div>
-        <div>
-          {isLoading ? (
-            <p>Loading...</p>
-          ) : (
-            <ul>
-              {searchResults.map((planet) => (
-                <li key={planet.name}>
-                  <strong>Name:</strong> {planet.name} <br />
-                  <strong>Climate:</strong> {planet.climate} <br />
-                  <strong>Population:</strong> {planet.population}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-        {errorMessage && <div className="error-message">{errorMessage}</div>}
+        <SearchPanel
+          searchTerm={searchTerm}
+          onSearchChange={(value) => this.setState({ searchTerm: value })}
+          onSearchClick={() => this.handleSearch(searchTerm)}
+        />
+        <div>{isLoading ? <p>Loading...</p> : <PlanetList searchResults={searchResults} />}</div>
+        {errorMessage && <ErrorMessage message={errorMessage} />}
         <button type="button" onClick={this.throwError}>
           Throw Error
         </button>
