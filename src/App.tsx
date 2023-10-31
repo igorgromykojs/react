@@ -23,7 +23,7 @@ class App extends Component<AppProps, AppState> {
       searchTerm: '',
       searchResults: [],
       isLoading: true,
-      errorMessage: ''
+      errorMessage: '',
     };
   }
 
@@ -34,12 +34,21 @@ class App extends Component<AppProps, AppState> {
   handleSearch = async (term: string) => {
     this.setState({ isLoading: true });
     try {
-      const response = await fetch(`https://swapi.dev/api/planets/?search=${term}`);
+      const response = await fetch(
+        `https://swapi.dev/api/planets/?search=${term}`
+      );
       const data = await response.json();
-      this.setState({ searchResults: data.results, isLoading: false, errorMessage: '' });
+      this.setState({
+        searchResults: data.results,
+        isLoading: false,
+        errorMessage: '',
+      });
       localStorage.setItem('searchTerm', term);
     } catch (error) {
-      this.setState({ errorMessage: `Error fetching data: ${error}`, isLoading: false });
+      this.setState({
+        errorMessage: `Error fetching data: ${error}`,
+        isLoading: false,
+      });
     }
   };
 
@@ -50,7 +59,10 @@ class App extends Component<AppProps, AppState> {
       const data = await response.json();
       this.setState({ searchResults: data.results, isLoading: false });
     } catch (error) {
-      this.setState({ errorMessage: `Error fetching data: ${error}`, isLoading: false });
+      this.setState({
+        errorMessage: `Error fetching data: ${error}`,
+        isLoading: false,
+      });
     }
   };
 
