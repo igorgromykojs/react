@@ -38,11 +38,11 @@ class App extends Component<AppProps, AppState> {
       this.fetchData();
     }
   }
-  
+
   throwError = () => {
     throw new Error('This is a sample error');
   };
-  
+
   handleSearch = async (term: string) => {
     this.setState({ isLoading: true });
     try {
@@ -63,7 +63,7 @@ class App extends Component<AppProps, AppState> {
       });
     }
   };
-  
+
   fetchData = async () => {
     this.setState({ isLoading: true });
     try {
@@ -88,7 +88,13 @@ class App extends Component<AppProps, AppState> {
           onSearchChange={(value) => this.setState({ searchTerm: value })}
           onSearchClick={() => this.handleSearch(searchTerm)}
         />
-        <div>{isLoading ? <p>Loading...</p> : <PlanetList searchResults={searchResults} />}</div>
+        <div>
+          {isLoading ? (
+            <p>Loading...</p>
+          ) : (
+            <PlanetList searchResults={searchResults} />
+          )}
+        </div>
         {errorMessage && <ErrorMessage message={errorMessage} />}
         <button type="button" onClick={this.throwError}>
           Throw Error
