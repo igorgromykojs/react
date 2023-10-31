@@ -68,7 +68,11 @@ const App: React.FC = () => {
         onSearchClick={() => handleSearch(searchTerm)}
       />
       <div>
-        {isLoading ? <p>Loading...</p> : <PlanetList searchResults={searchResults} />}
+        {isLoading ? (
+          <p>Loading...</p>
+        ) : (
+          <PlanetList searchResults={searchResults} />
+        )}
       </div>
       {errorMessage && <ErrorMessage message={errorMessage} />}
       <button type="button" onClick={throwError}>
