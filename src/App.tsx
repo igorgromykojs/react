@@ -73,8 +73,16 @@ const App: React.FC = () => {
         }}
       />
       <div>
-        {isLoading ? <p>Loading...</p> : <PlanetList searchResults={searchResults} />}
-        <Pagination currentPage={currentPage} onPageChange={handlePageChange} totalPages={totalPages} />
+        {isLoading ? (
+          <p>Loading...</p>
+        ) : (
+          <PlanetList searchResults={searchResults} />
+        )}
+        <Pagination
+          currentPage={currentPage}
+          onPageChange={handlePageChange}
+          totalPages={totalPages}
+        />
       </div>
       {errorMessage && <ErrorMessage message={errorMessage} />}
       <button type="button" onClick={() => {}}>
